@@ -2,13 +2,20 @@
   <div class="counter">
     <h2>{{ title }}</h2>
 
+    <p v-if="loading">Loading</p>
+    <p v-if="error">error</p>
+
+    <template v-else>
     <p>Count : {{ count }}</p>
     <p>Doubled : {{ doubled }}</p>
 
     <button @click="increment">+</button>
     <button @click="decrement" :disabled="!canDecrement">-</button>
     <button @click="reset">RESET</button>
-  </div>
+    <button @click="loadInitialCount">Load</button>
+    </template>
+
+</div>
 </template>
 
 <script setup>
@@ -24,8 +31,8 @@ defineProps({
 
 const counterStore = useCounterStore()
 
-const { count, doubled, canDecrement } = storeToRefs(counterStore)
-const { increment, decrement, reset } = counterStore
+const { count, doubled, canDecrement, loading, error } = storeToRefs(counterStore)
+const { increment, decrement, reset, loadInitialCount } = counterStore
 </script>
 
 <style scoped>
@@ -33,5 +40,8 @@ const { increment, decrement, reset } = counterStore
   border: 1px solid #ccc;
   padding: 1rem;
   margin-bottom: 1rem;
+}
+.error{
+  color: red
 }
 </style>

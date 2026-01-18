@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { useCounter } from '../composables/useCounter.js'
 import { useSettingStore } from './settingStore.js'
-import { normalizeModuleId } from 'vite/module-runner'
+
 
 const STORAGE_KEY = 'counter-store'
 
@@ -37,7 +37,7 @@ export const useCounterStore = defineStore('counter', () => {
   //async action test
   async function loadInitialCount(){
     loading.value = true
-    error.value = normalizeModuleId
+    error.value = null
     
     try{
       //api latency sim
