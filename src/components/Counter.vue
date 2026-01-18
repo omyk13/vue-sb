@@ -13,7 +13,9 @@
     <button @click="decrement" :disabled="!canDecrement">-</button>
     <button @click="reset">RESET</button>
     <button @click="loadInitialCount">Load</button>
-    </template>
+    
+      <slot name = "slot here!!!"></slot>
+  </template>
 
 </div>
 </template>
@@ -21,6 +23,7 @@
 <script setup>
 import { useCounterStore } from '../stores/counterStore.js'
 import { storeToRefs } from 'pinia'
+import {watch} from 'vue'
 
 defineProps({
   title: {
@@ -29,10 +32,19 @@ defineProps({
   },
 })
 
+const emit = defineEmits(['ATZero'])
 const counterStore = useCounterStore()
 
 const { count, doubled, canDecrement, loading, error } = storeToRefs(counterStore)
 const { increment, decrement, reset, loadInitialCount } = counterStore
+
+
+watch(count,(newValue)=>{
+  if (newValue ===0){
+    emit('ATZero')
+  }
+})
+
 </script>
 
 <style scoped>

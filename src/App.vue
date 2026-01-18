@@ -2,7 +2,10 @@
   <div>
     <h1>You did it with multiple counters!</h1>
 
-    <Counter title="First Counter" />
+    <Counter title="First Counter" @ATZero="atZeroHandler"/>
+    <template #slot here!!!>
+      <p style="color: burlywood;">This is content for the slot!</p>
+    </template>
     <Counter title="Second Counter" />
     <Counter title="Third Counter" />
 
