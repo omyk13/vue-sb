@@ -13,8 +13,10 @@
 <script setup>
 import Counter from './components/Counter.vue'
 import { useCounterStore } from './stores/counterStore.js'
+import { storeToRefs } from 'pinia'
 
-const { doubled } = useCounterStore()
+const doublestore = useCounterStore()
+const { doubled } = storeToRefs(doublestore)
 </script>
 
 <style scoped>
