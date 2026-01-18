@@ -7,10 +7,10 @@
     </p>
 
     <p>Count: {{ count }}</p>
-
+    <p>Doubled: {{ doubled }}</p>
     <button @click="increment">+</button>
 
-    <button @click="decrement" :disabled="count === 0">-</button>
+    <button @click="decrement" :disabled="!canDecrement">-</button>
     <button @click="reset">Reset</button>
   </div>
 </template>
@@ -18,7 +18,7 @@
 <script setup>
 import { useCounter } from './composables/useCounter.js'
 
-const { count, increment, decrement, reset } = useCounter()
+const { count, canDecrement, doubled, increment, decrement, reset } = useCounter(12)
 </script>
 
 <style scoped>

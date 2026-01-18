@@ -1,14 +1,17 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export function useCounter(initialValue = 0) {
   const count = ref(initialValue)
+
+  const doubled = computed(() => count.value * 2)
+  const canDecrement = computed(() => count.value > 0)
 
   function increment() {
     count.value += 1
   }
 
   function decrement() {
-    if (count.value > 0) {
+    if (canDecrement.value) {
       count.value -= 1
     }
   }
@@ -19,6 +22,8 @@ export function useCounter(initialValue = 0) {
 
   return {
     count,
+    doubled,
+    canDecrement,
     increment,
     decrement,
     reset,
