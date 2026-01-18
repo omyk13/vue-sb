@@ -15,7 +15,7 @@ export const useCounterStore = defineStore('counter', () => {
     count.value -= settings.step
   }
 
-  const { doubled, canDecrement, increment, decrement, reset } = useCounter(count)
+  const { doubled, canDecrement, reset } = useCounter(count)
 
   return { count, doubled, canDecrement, increment, decrement, reset }
 })
