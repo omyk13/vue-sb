@@ -16,6 +16,7 @@ export const useCounterStore = defineStore('counter', () => {
   const loading = ref(false)
   const error = ref(null)
 
+  let abortController = null
 
   const settings = useSettingStore()
 
@@ -36,23 +37,50 @@ export const useCounterStore = defineStore('counter', () => {
 
   //async action test
   async function loadInitialCount(){
+    
+    abortController?.abort()
+    abortController = new AbortController()
+
     loading.value = true
     error.value = null
     
     try{
-      //api latency sim
-      await new Promise(r => setTimeout(r,1000))
+      //api latency sim. Rule of thumb: always keep latest request according to GPT. Always silent abort.
+      await withRetry(async ()=> {
+      await new Promise((resolve,reject) =>{
+        const timeout =setTimeout(resolve, 1000)
 
-      const response = {count : 42}
-
-      count.value = response.count
-    } 
+        abortController.signal.addEventListener('abort', () => {
+          clearTimeout(timeout)
+          reject(new DOMException('ABORTED', 'Abortrror'))
+        })
+      })
+      count.value = 42
+    })
+  }
     catch (e) {
-      error.value = 'failed to load count'
-
+      if (e.name !=='AbortError'){
+          error.value = 'failed to load count'
+      }
+      else{
+        error.value = 'bad response'
+      }
     }
     finally{
       loading.value = false
+    }
+  }
+
+  async function withRetry(asyncFunction, retries = 3, delay = 1000) {
+    for (let i =0; i < retries; i++){
+      try{
+        return await asyncFunction()
+
+      }
+      catch (e){
+        if (i === retries -1) throw e
+        await new Promise((resolve) => setTimeout(resolve, delay))
+      }
     }
   }
 

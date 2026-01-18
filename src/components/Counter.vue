@@ -3,11 +3,11 @@
     <h2>{{ title }}</h2>
 
     <p v-if="loading">Loading</p>
-    <p v-if="error">error</p>
+    <p v-if = "error">error : {{ error }}</p>
 
     <template v-else>
     <p>Count : {{ count }}</p>
-    <p>Doubled : {{ doubled }}</p>
+    <p>Doubled : {{ doubled }}</p> 
 
     <button @click="increment">+</button>
     <button @click="decrement" :disabled="!canDecrement">-</button>

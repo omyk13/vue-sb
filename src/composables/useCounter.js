@@ -15,7 +15,7 @@ export function useCounter(count, step) {
   }
 
   function reset() {
-    count.value = 7
+    count.value = 0
   }
 
   return {
