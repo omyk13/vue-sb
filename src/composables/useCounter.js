@@ -1,7 +1,7 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 export function useCounter(initialValue = 0) {
-  const count = ref(initialValue)
+  const count = ref(Number(localStorage.getItem('count')) || initialValue)
 
   const doubled = computed(() => count.value * 2)
   const canDecrement = computed(() => count.value > 0)
@@ -19,6 +19,10 @@ export function useCounter(initialValue = 0) {
   function reset() {
     count.value = initialValue
   }
+
+  watch(count, (newValue, oldValue) => {
+    localStorage.setItem('count', newValue)
+  })
 
   return {
     count,
