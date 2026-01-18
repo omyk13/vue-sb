@@ -14,7 +14,7 @@
     <button @click="reset">RESET</button>
     <button @click="loadInitialCount">Load</button>
     
-      <slot name = "slot here!!!"></slot>
+  
   </template>
 
 </div>
@@ -32,7 +32,7 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['ATZero'])
+const emit = defineEmits(['at-zero'])
 const counterStore = useCounterStore()
 
 const { count, doubled, canDecrement, loading, error } = storeToRefs(counterStore)
