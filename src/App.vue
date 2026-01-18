@@ -1,24 +1,19 @@
 <template>
   <div class="counter">
-    <h1>You did it with a counter!</h1>
+    <h1>You did it with multiple counters!</h1>
     <p>
       Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
       documentation
     </p>
 
-    <p>Count: {{ count }}</p>
-    <p>Doubled: {{ doubled }}</p>
-    <button @click="increment">+</button>
-
-    <button @click="decrement" :disabled="!canDecrement">-</button>
-    <button @click="reset">Reset</button>
+    <Counter title="First Counter" :initialValue="5" />
+    <Counter title="Second Counter" :initialValue="10" />
+    <Counter title="Third Counter" :initialValue="15" />
   </div>
 </template>
 
 <script setup>
-import { useCounter } from './composables/useCounter.js'
-
-const { count, canDecrement, doubled, increment, decrement, reset } = useCounter(12)
+import Counter from './components/Counter.vue'
 </script>
 
 <style scoped>
