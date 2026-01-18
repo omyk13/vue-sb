@@ -15,25 +15,10 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      count: 0,
-    }
-  },
-  methods: {
-    increment() {
-      this.count++
-    },
-    decrement() {
-      if (this.count > 0) this.count--
-    },
-    reset() {
-      this.count = 0
-    },
-  },
-}
+<script setup>
+import { useCounter } from './composables/useCounter.js'
+
+const { count, increment, decrement, reset } = useCounter()
 </script>
 
 <style scoped>
