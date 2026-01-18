@@ -12,19 +12,20 @@
 </template>
 
 <script setup>
-import { useCounter } from '../composables/useCounter.js'
+import { useCounterStore } from '../stores/counterStore.js'
+import { storeToRefs } from 'pinia'
 
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
   },
-  initialValue: {
-    type: Number,
-    default: 0,
-  },
 })
-const { count, canDecrement, doubled, increment, decrement, reset } = useCounter(props.initialValue)
+
+const counterStore = useCounterStore()
+
+const { count, doubled, canDecrement } = storeToRefs(counterStore)
+const { increment, decrement, reset } = counterStore
 </script>
 
 <style scoped>

@@ -8,11 +8,11 @@ export const useCounterStore = defineStore('counter', () => {
   const canDecrement = computed(() => count.value > 0)
 
   function increment() {
-    count.value += 1
+    count.value++
   }
   function decrement() {
     if (canDecrement.value) {
-      count.value -= 1
+      count.value--
     }
   }
   function reset() {
