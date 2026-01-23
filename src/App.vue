@@ -25,9 +25,7 @@ const { doubled } = storeToRefs(doublestore)
 const lastZeroMessage = ref('')
 
 
-function atZeroHandler(){
-   lastZeroMessage.value = `yay!`
-}
+
 </script>
 
 <style scoped>

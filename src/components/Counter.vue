@@ -7,14 +7,14 @@
 
     <template v-else>
     <p>Count : {{ count }}</p>
-    <p>Doubled : {{ doubled }}</p> 
+    <p>Doubled : {{ doubled }}</p>
 
     <button @click="increment">+</button>
     <button @click="decrement" :disabled="!canDecrement">-</button>
     <button @click="reset">RESET</button>
     <button @click="loadInitialCount">Load</button>
-    
-  
+
+
   </template>
 
 </div>

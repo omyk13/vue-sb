@@ -7,12 +7,12 @@ import { useSettingStore } from './settingStore.js'
 const STORAGE_KEY = 'counter-store'
 
 export const useCounterStore = defineStore('counter', () => {
-  
+
   //-------certain state-------------
   //hydrate??
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
   const count = ref(saved?.count ?? 0)  //Initial value, zero if null?
-  
+
   const loading = ref(false)
   const error = ref(null)
 
@@ -22,7 +22,6 @@ export const useCounterStore = defineStore('counter', () => {
 
   const { doubled, canDecrement,increment,decrement, reset } = useCounter(count,settings.step)
 
- 
   //persistence. huh?
   watch(
     count,
@@ -32,18 +31,19 @@ export const useCounterStore = defineStore('counter', () => {
         JSON.stringify({count: count.value})
       )
     },
+
     {deep:false}
   )
 
   //async action test
   async function loadInitialCount(){
-    
+
     abortController?.abort()
     abortController = new AbortController()
 
     loading.value = true
     error.value = null
-    
+
     try{
       //api latency sim. Rule of thumb: always keep latest request according to GPT. Always silent abort.
       await withRetry(async ()=> {
