@@ -2,8 +2,7 @@
   <div>
     <h1>You did it with multiple counters!</h1>
 
-    <Counter title="First Counter" @at-zero="atZeroHandler"/>
-
+    <Counter title="First Counter"/>
     <Counter title="Second Counter" />
     <Counter title="Third Counter" />
 
