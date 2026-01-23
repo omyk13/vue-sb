@@ -2,9 +2,8 @@
   <div>
     <h1>You did it with multiple counters!</h1>
 
-    <Counter title="First Counter"/>
-    <Counter title="Second Counter" />
-    <Counter title="Third Counter" />
+    <MultiCounter/>
+
 
     <p>Total: {{ doubled }}</p>
 
@@ -15,7 +14,7 @@
 </template>
 
 <script setup>
-import Counter from './components/Counter.vue'
+import MultiCounter from './components/multiCounter.vue'
 import { useCounterStore } from './stores/counterStore.js'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
@@ -23,8 +22,6 @@ import { ref } from 'vue'
 const doublestore = useCounterStore()
 const { doubled } = storeToRefs(doublestore)
 const lastZeroMessage = ref('')
-
-
 
 </script>
 

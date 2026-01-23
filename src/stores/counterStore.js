@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useCounter } from '../composables/useCounter.js'
 import { useSettingStore } from './settingStore.js'
 
@@ -7,6 +7,9 @@ import { useSettingStore } from './settingStore.js'
 const STORAGE_KEY = 'counter-store'
 
 export const useCounterStore = defineStore('counter', () => {
+
+  const counters = ref([])
+
 
   //-------certain state-------------
   //hydrate??
