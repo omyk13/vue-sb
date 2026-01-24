@@ -36,7 +36,7 @@ const store = useCounterStore()
 const {doubled} = storeToRefs(store)
 
 const counters = reactive([
-    {id: 1, title: 'Counter 1', isZero:false},
+    {id: 1, title: 'Counter 1:', isZero:false},
     {id: 2 ,title: 'Counter 2', isZero:false},
     {id: 3 ,title: 'Counter 3', isZero:false},
 ])
@@ -46,7 +46,7 @@ let nextId = 4
 function addCounter(){
   counters.push({
     id: nextId++,
-    title: 'Counter $(nextId -1)',
+    title: 'Counter: $(nextId -1)',
     initialValue: 0,
     isZero: false,
   })
