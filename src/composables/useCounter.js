@@ -19,6 +19,7 @@ export function useCounter(count, step) {
   }
 
   return {
+    count,
     doubled,
     canDecrement,
     increment,

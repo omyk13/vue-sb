@@ -22,29 +22,32 @@
 
 <script setup>
 import { useCounterStore } from '../stores/counterStore.js'
+import { useCounter } from '../composables/useCounter.js'
 import { storeToRefs } from 'pinia'
-import {watch} from 'vue'
+import {watch, computed} from 'vue'
 
-defineProps({
-  title: {
-    type: String,
+const props = defineProps({
+id: {
+    type: Number,
     required: true,
-  },
+},
 })
 
 const emit = defineEmits(['at-zero'])
-const counterStore = useCounterStore()
+const store = useCounterStore()
+const counterRef = store.getCounterRef(props.id)
 
-const { count, doubled, canDecrement, loading, error } = storeToRefs(counterStore)
-const { increment, decrement, reset, loadInitialCount } = counterStore
+const {
+  count,
+  doubled,
+  canDecrement,
+  decrement,
+  increment,
+  reset,
+} = useCounter(counterRef, store.settings.step)
 
-
-watch(count,(newValue)=>{
-  if (newValue ===0){
-    emit('ATZero')
-  }
-})
-
+const isZero = computed(() => store.counters[props.id].isZero)
+const title = computed(() => store.counters[props.id].title)
 </script>
 
 <style scoped>

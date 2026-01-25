@@ -1,15 +1,14 @@
 <template>
     <div class="multi-counter">
-        <h1>Mutlti-Counter superb app</h1>
+        <h1>Multi-Counter superb app</h1>
 
         <button @click="addCounter">Add Counter</button>
         <button @click="removeCounter">Remove Counter</button>
         <Counter
-            v-for ="(counter, index) in counters"
-            :key="counter.id"
-            :title="counter.title"
+            v-for ="id in store.ids"
+            :key="id"
+            :id="id"
             @at-zero="handleZero(index)"
-
         >
 
           <template #extra>
@@ -19,8 +18,8 @@
           </template>
         </Counter>
 
-
-        <p>Total doubled count: {{totalDoubled}} </p>
+        <p>Total doubled count: {{store.totalDoubled}} </p>
+        <p>Total count: {{store.total}} </p>
 
     </div>
 </template>
@@ -35,25 +34,16 @@ import {storeToRefs} from 'pinia'
 const store = useCounterStore()
 const {doubled} = storeToRefs(store)
 
-const counters = reactive([
-    {id: 1, title: 'Counter 1:', isZero:false},
-    {id: 2 ,title: 'Counter 2', isZero:false},
-    {id: 3 ,title: 'Counter 3', isZero:false},
-])
+const counters = reactive([])
 
-let nextId = 4
+let nextId = 0
 
 function addCounter(){
-  counters.push({
-    id: nextId++,
-    title: 'Counter: $(nextId -1)',
-    initialValue: 0,
-    isZero: false,
-  })
+  store.addCounter(`Counter ${store.ids.length + 1}`)
 }
 
-function removeCounter(index){
-  counters.splice(index,1)
+function removeCounter(){
+  store.removeCounter(`Counter ${store.ids.length - 1}`)
 }
 
 function handleZero(index){

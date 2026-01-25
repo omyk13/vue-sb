@@ -3,39 +3,74 @@ import { ref, computed, watch } from 'vue'
 import { useCounter } from '../composables/useCounter.js'
 import { useSettingStore } from './settingStore.js'
 
-
+//should the store carry logic or no?
+//feels nicer to have it separated in a composable
 const STORAGE_KEY = 'counter-store'
 
 export const useCounterStore = defineStore('counter', () => {
 
-  const counters = ref([])
-
-
   //-------certain state-------------
   //hydrate??
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
-  const count = ref(saved?.count ?? 0)  //Initial value, zero if null?
+  const counters = ref(saved?.counters ?? {})  //Initial value, zero if null?
+  const ids = ref(saved?.ids ?? [])
 
   const loading = ref(false)
   const error = ref(null)
 
   let abortController = null
-
+  let nextId =0
   const settings = useSettingStore()
 
-  const { doubled, canDecrement,increment,decrement, reset } = useCounter(count,settings.step)
+  function addCounter(title) {
+    const id = nextId++
+    counters.value[id] = {
+      id,
+      title,
+      value: 0,
+      isZero: false,
+    }
+    ids.value.push(id)
+  }
+
+  function removeCounter(id) {
+    delete counters.value[id]
+    ids.value = ids.value.filter(x => x!== id)
+  }
+
+  function getCounterRef(id) {
+    return computed({
+      get: () => counters.value[id].value,
+      set: v => {
+        counters.value[id].value = v
+        counters.value[id].isZero = v === 0
+      },
+    })
+  }
+
+  const totalDoubled = computed (() =>
+    ids.value.reduce(
+      (sum,id) => sum + counters.value[id].value * 2,0
+    )
+  )
+
+  const total = computed (() =>
+    ids.value.reduce(
+      (sum,id) => sum + counters.value[id].value,0
+    )
+  )
 
   //persistence. huh?
   watch(
-    count,
-    () => {
+    () => ({counters: counters.value, ids: ids.value}),
+    (state) => {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({count: count.value})
+        JSON.stringify({state})
       )
     },
 
-    {deep:false}
+    {deep:true}
   )
 
   //async action test
@@ -48,14 +83,15 @@ export const useCounterStore = defineStore('counter', () => {
     error.value = null
 
     try{
-      //api latency sim. Rule of thumb: always keep latest request according to GPT. Always silent abort.
+      //api latency sim. Rule of thumb: always keep latest request according to GPT.
+      //Always silent abort.
       await withRetry(async ()=> {
       await new Promise((resolve,reject) =>{
         const timeout =setTimeout(resolve, 1000)
 
         abortController.signal.addEventListener('abort', () => {
           clearTimeout(timeout)
-          reject(new DOMException('ABORTED', 'Abortrror'))
+          reject(new DOMException('ABORTED', 'AbortError'))
         })
       })
       count.value = 42
@@ -87,5 +123,17 @@ export const useCounterStore = defineStore('counter', () => {
     }
   }
 
-  return { count, doubled, canDecrement, increment, decrement, reset, loadInitialCount, loading, error }
+  return {
+    counters,
+    ids,
+    settings,
+    total,
+    totalDoubled,
+    addCounter,
+    removeCounter,
+    getCounterRef,
+    loadInitialCount,
+    loading,
+    error,
+  }
 })

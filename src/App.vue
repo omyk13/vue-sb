@@ -4,12 +4,6 @@
 
     <MultiCounter/>
 
-
-    <p>Total: {{ doubled }}</p>
-
-    <p v-if="lastZeroMessage">{{ lastZeroMessage}}</p>
-
-
   </div>
 </template>
 
@@ -19,9 +13,6 @@ import { useCounterStore } from './stores/counterStore.js'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
-const doublestore = useCounterStore()
-const { doubled } = storeToRefs(doublestore)
-const lastZeroMessage = ref('')
 
 </script>
 
