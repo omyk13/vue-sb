@@ -79,7 +79,7 @@ export const useCounterStore = defineStore('counter', () => {
 //      )
 //    },
 //    {deep:true}
-  )
+// )
 
   //async action test
   async function loadInitialCount(){
@@ -144,4 +144,4 @@ export const useCounterStore = defineStore('counter', () => {
     loading,
     error,
   }
-})
+}
