@@ -39,11 +39,11 @@ const counters = reactive([])
 let nextId = 0
 
 function addCounter(){
-  store.addCounter(`Counter ${store.ids.length + 1}`)
+  store.addCounter()
 }
 
 function removeCounter(){
-  store.removeCounter(`Counter ${store.ids.length - 1}`)
+  store.removeCounter(store.ids.length - 1)
 }
 
 function handleZero(index){

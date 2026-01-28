@@ -11,9 +11,9 @@ export const useCounterStore = defineStore('counter', () => {
 
   //-------certain state-------------
   //hydrate??
-  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
-  const counters = ref(saved?.counters ?? {})  //Initial value, zero if null?
-  const ids = ref(saved?.ids ?? [])
+  const hydrate= JSON.parse(localStorage.getItem(STORAGE_KEY))
+  const counters = ref(hydrate?.counters ?? {})  //Initial value, zero if null?
+  const ids = ref(hydrate?.ids ?? [])
 
   const loading = ref(false)
   const error = ref(null)
@@ -22,20 +22,26 @@ export const useCounterStore = defineStore('counter', () => {
   let nextId =0
   const settings = useSettingStore()
 
-  function addCounter(title) {
-    const id = nextId++
+  function addCounter() {
+    const id = nextId
     counters.value[id] = {
       id,
-      title,
+      title: `Counter ${id + 1}`,
       value: 0,
       isZero: false,
     }
     ids.value.push(id)
+    console.log('New counter created at:',id)
+    nextId++
+    console.log('Next counter will be created at:',nextId)
   }
 
   function removeCounter(id) {
     delete counters.value[id]
-    ids.value = ids.value.filter(x => x!== id)
+    ids.value.splice(id,1)
+    console.log('Counter removed from: ',id)
+    nextId = id
+    console.log('Next counter will be created at: ',nextId)
   }
 
   function getCounterRef(id) {
@@ -61,17 +67,19 @@ export const useCounterStore = defineStore('counter', () => {
   )
 
   //persistence. huh?
-  watch(
-    () => ({counters: counters.value, ids: ids.value}),
-    (state) => {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({state})
-      )
-    },
-
-    {deep:true}
-  )
+//  watch(
+//    [counters,ids],
+//    (newCounters, newIds) => {
+//      localStorage.setItem(
+//        STORAGE_KEY,
+//        JSON.stringify({
+//          counters: newCounters,
+//          ids: newIds
+//        })
+//      )
+//    },
+//    {deep:true}
+//  )
 
   //async action test
   async function loadInitialCount(){
