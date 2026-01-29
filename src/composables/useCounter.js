@@ -18,12 +18,17 @@ export function useCounter(count, step) {
     count.value = 0
   }
 
+  function loadInitialCount(){
+    count.value = 11
+  }
+
   return {
     count,
     doubled,
     canDecrement,
     increment,
     decrement,
+    loadInitialCount,
     reset,
   }
 }

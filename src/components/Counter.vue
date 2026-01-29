@@ -43,6 +43,7 @@ const {
   canDecrement,
   decrement,
   increment,
+  loadInitialCount,
   reset,
 } = useCounter(counterRef, store.settings.step)
 

@@ -81,7 +81,7 @@ export const useCounterStore = defineStore('counter', () => {
     {deep:true}
  )
 
-  //async action test
+ //async action test
   async function loadInitialCount(){
 
     abortController?.abort()
