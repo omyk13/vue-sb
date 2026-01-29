@@ -19,7 +19,7 @@ export const useCounterStore = defineStore('counter', () => {
   const error = ref(null)
 
   let abortController = null
-  let nextId =0
+  let nextId =ids.value.length?Math.max(...ids.value)+1:0
   const settings = useSettingStore()
 
   function addCounter() {
@@ -67,19 +67,19 @@ export const useCounterStore = defineStore('counter', () => {
   )
 
   //persistence. huh?
-//  watch(
-//    [counters,ids],
-//    (newCounters, newIds) => {
-//      localStorage.setItem(
-//        STORAGE_KEY,
-//        JSON.stringify({
-//          counters: newCounters,
-//          ids: newIds
-//        })
-//      )
-//    },
-//    {deep:true}
-// )
+  watch(
+    [counters,ids],
+    ([newCounters, newIds]) => {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          counters: newCounters,
+          ids: newIds
+        })
+      )
+    },
+    {deep:true}
+ )
 
   //async action test
   async function loadInitialCount(){
@@ -102,7 +102,6 @@ export const useCounterStore = defineStore('counter', () => {
           reject(new DOMException('ABORTED', 'AbortError'))
         })
       })
-      count.value = 42
     })
   }
     catch (e) {
@@ -144,4 +143,4 @@ export const useCounterStore = defineStore('counter', () => {
     loading,
     error,
   }
-}
+})
