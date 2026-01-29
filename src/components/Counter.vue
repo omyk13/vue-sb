@@ -13,10 +13,7 @@
     <button @click="decrement" :disabled="!canDecrement">-</button>
     <button @click="reset">RESET</button>
     <button @click="loadInitialCount">Load</button>
-
-
   </template>
-
 </div>
 </template>
 
@@ -32,6 +29,8 @@ id: {
     required: true,
 },
 })
+
+
 
 const emit = defineEmits(['at-zero'])
 const store = useCounterStore()
