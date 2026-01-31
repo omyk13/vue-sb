@@ -1,14 +1,12 @@
 <template>
   <div>
     <h1>You did it with multiple counters!</h1>
-
     <MultiCounter/>
-
   </div>
 </template>
 
 <script setup>
-import MultiCounter from './components/multiCounter.vue'
+isdamport MultiCounter from './components/multiCounter.vue'
 import { useCounterStore } from './stores/counterStore.js'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
