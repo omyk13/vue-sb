@@ -4,7 +4,7 @@ export default {
   async getCounters() {
     try {
       const response = await apiClient.get('/getcounter')
-      return response.data.count
+      return response.data.counters
     } catch (error) {
       console.error('Error fetching count: ', error)
       throw error
@@ -12,7 +12,7 @@ export default {
   },
 
   //changing names with context, ask TJ
-  async setCounter(counter) {
+  async createCounter(counter) {
     try {
       const response = await apiClient.post('/setCount', { counter })
       return response.data.reply
