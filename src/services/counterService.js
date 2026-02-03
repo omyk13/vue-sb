@@ -1,9 +1,9 @@
 import apiClient from '../services/api.js'
 
 export default {
-  async getCount(id) {
+  async getCounters() {
     try {
-      const response = await apiClient.get(`/getcount/${id}`)
+      const response = await apiClient.get('/getcounter')
       return response.data.count
     } catch (error) {
       console.error('Error fetching count: ', error)
@@ -12,12 +12,22 @@ export default {
   },
 
   //changing names with context, ask TJ
-  async setCount(counter) {
+  async setCounter(counter) {
     try {
-      const response = await apiClient.post(`/setCount/${id}`, { counter })
+      const response = await apiClient.post('/setCount', { counter })
       return response.data.reply
     } catch (error) {
       console.error('Error setting count: ', error)
+      throw error
+    }
+  },
+
+  async delCounter(id) {
+    try {
+      const response = await apiClient.delete(`/delCounter/${id}`)
+      return response.data.reply
+    } catch (error) {
+      console.error('Error deleting counter: ', error)
       throw error
     }
   },
