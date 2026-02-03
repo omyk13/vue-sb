@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useSettingStore } from './settingStore.js'
 import { getCounters, createCounter, delCounter } from '../services/counterService.js'
 
@@ -76,24 +76,10 @@ export const useCounterStore = defineStore('counter', () => {
     const total = computed(() => ids.value.reduce((sum, id) => sum + counters.value[id].value, 0))
 
     const hydrate = JSON.parse(localStorage.getItem(STORAGE_KEY))
-    counters = ref(hydrate?.counters ?? {}) //Initial value, zero if null?
-    const ids = ref(hydrate?.ids ?? [])
 
-    //persistence. huh?
-    watch(
-      [counters, ids],
-      ([newCounters, newIds]) => {
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            counters: newCounters,
-            ids: newIds,
-          }),
-        )
-      },
-      { deep: true },
-    )
-
+    if (hydrate?.length) {
+      counters.value = hydrate
+    }
     return {
       counters,
       ids,

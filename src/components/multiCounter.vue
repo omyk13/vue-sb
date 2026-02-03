@@ -16,30 +16,29 @@
 </template>
 
 <script setup>
-
-import {reactive,computed} from 'vue'
+import { reactive, computed } from 'vue'
 import Counter from '../components/Counter.vue'
-import {useCounterStore} from '../stores/counterStore.js'
-import {storeToRefs} from 'pinia'
-import counterService from '../services/counterService.js
+import { useCounterStore } from '../stores/counterStore.js'
+import { storeToRefs } from 'pinia'
+import counterService from '../services/counterService.js'
 
 const store = useCounterStore()
-const {doubled} = storeToRefs(store)
+const { doubled } = storeToRefs(store)
 
 const counters = reactive([])
 
 let nextId = 0
 
-function addCounter(){
+function addCounter() {
   store.addCounter(store.ids.length + 1)
 }
 
-function removeCounter(){
+function removeCounter() {
   store.removeCounter(store.ids.length - 1)
 }
 
-function handleZero(index){
-    counters[index].isZero = true
+function handleZero(index) {
+  counters[index].isZero = true
 }
 
 const totalDoubled = computed(() => doubled.value)

@@ -11,7 +11,6 @@ export default {
     }
   },
 
-  //changing names with context, ask TJ
   async createCounter(counter) {
     try {
       const response = await apiClient.post('/setCount', { counter })
