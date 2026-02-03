@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-isdamport MultiCounter from './components/multiCounter.vue'
+import MultiCounter from './components/multiCounter.vue'
 import { useCounterStore } from './stores/counterStore.js'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
