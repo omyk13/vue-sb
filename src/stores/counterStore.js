@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useSettingStore } from './settingStore.js'
-import { getCounters, createCounter, delCounter } from '../services/counterService.js'
+import { getCounters, createCounter, delCounters } from '../services/counterService.js'
 
 //should the store carry logic or no?
 //feels nicer to have it separated in a composable
-const STORAGE_KEY = 'counter-store'
 
 export const useCounterStore = defineStore('counter', () => {
   //-------certain state-------------
@@ -23,7 +22,7 @@ export const useCounterStore = defineStore('counter', () => {
       return newCounter
     } catch (e) {
       error.value = e
-      console.error = ('Failed to add counter: ', e)
+      console.error('Failed to add counter: ', e)
       throw e
     } finally {
       loading.value = false
@@ -43,52 +42,44 @@ export const useCounterStore = defineStore('counter', () => {
     } finally {
       loading.value = false
     }
+  }
 
-    async function removeCounter(id) {
-      loading.value = true
-      error.value = null
-      try {
-        await delCounter(id)
-        await loadCounters()
-      } catch (e) {
-        error.value = e
-        console.error('Failed to remove counter: ', e)
-        throw e
-      } finally {
-        loading.value = false
-      }
+  async function removeCounter(id) {
+    loading.value = true
+    error.value = null
+    try {
+      await delCounters(id)
+      await loadCounters()
+    } catch (e) {
+      error.value = e
+      console.error('Failed to remove counter: ', e)
+      throw e
+    } finally {
+      loading.value = false
     }
+  }
 
-    function getCounterRef(id) {
-      return computed({
-        get: () => counters.value[id].value,
-        set: (v) => {
-          counters.value[id].value = v
-          counters.value[id].isZero = v === 0
-        },
-      })
-    }
+  function getCounterRef(id) {
+    return computed({
+      get: () => counters.value[id].value,
+      set: (v) => {
+        counters.value[id].value = v
+        counters.value[id].isZero = v === 0
+      },
+    })
+  }
 
-    const totalDoubled = computed(() =>
-      ids.value.reduce((sum, id) => sum + counters.value[id].value * 2, 0),
-    )
+  const totalDoubled = computed(() => counters.value.reduce((sum, c) => sum + c.value * 2, 0))
 
-    const total = computed(() => ids.value.reduce((sum, id) => sum + counters.value[id].value, 0))
+  const total = computed(() => counters.value.reduce((sum, c) => sum + c.value, 0))
 
-    const hydrate = JSON.parse(localStorage.getItem(STORAGE_KEY))
-
-    if (hydrate?.length) {
-      counters.value = hydrate
-    }
-    return {
-      counters,
-      ids,
-      settings,
-      total,
-      totalDoubled,
-      addCounter,
-      removeCounter,
-      getCounterRef,
-    }
+  return {
+    counters,
+    settings,
+    total,
+    totalDoubled,
+    addCounter,
+    removeCounter,
+    getCounterRef,
   }
 })
