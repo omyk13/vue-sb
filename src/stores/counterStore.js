@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useSettingStore } from './settingStore.js'
-import { getCounters, createCounter, delCounters } from '../services/counterService.js'
+import { acounterFunctions } from '../services/counterService.js'
 
 //should the store carry logic or no?
 //feels nicer to have it separated in a composable
@@ -12,12 +12,13 @@ export const useCounterStore = defineStore('counter', () => {
   const loading = ref(false)
   const error = ref(null)
   const settings = useSettingStore()
+  const services = acounterFunctions()
 
   async function addCounter(counterData) {
     loading.value = true
     error.value = null
     try {
-      const newCounter = await createCounter(counterData)
+      const newCounter = await services.createCounter(counterData)
       await loadCounters()
       return newCounter
     } catch (e) {
@@ -34,7 +35,7 @@ export const useCounterStore = defineStore('counter', () => {
     error.value = null
 
     try {
-      const apiCounters = await getCounters()
+      const apiCounters = await services.getCounters()
       counters.value = apiCounters
     } catch (error) {
       error.value = error
@@ -48,7 +49,7 @@ export const useCounterStore = defineStore('counter', () => {
     loading.value = true
     error.value = null
     try {
-      await delCounters(id)
+      await services.delCounters(id)
       await loadCounters()
     } catch (e) {
       error.value = e

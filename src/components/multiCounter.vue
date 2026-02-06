@@ -4,7 +4,7 @@
 
     <button @click="addCounter">Add Counter</button>
     <button @click="removeCounter">Remove Counter</button>
-    <Counter v-for="id in store.ids" :key="id" :id="id" @at-zero="handleZero(index)">
+    <Counter v-for="id in store.counters" :key="id" :id="id" @at-zero="handleZero(index)">
       <template #extra>
         <p v-if="counter.isZero" style="color: red">{{ counter.title }} reached zero!</p>
       </template>
@@ -20,21 +20,18 @@ import { reactive, computed } from 'vue'
 import Counter from '../components/Counter.vue'
 import { useCounterStore } from '../stores/counterStore.js'
 import { storeToRefs } from 'pinia'
-import counterService from '../services/counterService.js'
 
 const store = useCounterStore()
 const { doubled } = storeToRefs(store)
 
 const counters = reactive([])
 
-let nextId = 0
-
 function addCounter() {
-  store.addCounter(store.ids.length + 1)
+  store.addCounter(store.counters.id + 1) //thats wrong
 }
 
 function removeCounter() {
-  store.removeCounter(store.ids.length - 1)
+  store.removeCounter(store.counters.id - 1)
 }
 
 function handleZero(index) {

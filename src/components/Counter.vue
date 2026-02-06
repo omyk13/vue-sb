@@ -21,7 +21,7 @@
 import { useCounterStore } from '../stores/counterStore.js'
 import { useCounter } from '../composables/useCounter.js'
 import { storeToRefs } from 'pinia'
-import { watch, computed, ref, onMounted } from 'vue'
+import { watch, computed, ref } from 'vue'
 
 const props = defineProps({
   id: {
